@@ -100,7 +100,7 @@ Employee* login(Employee* head)
 void AddNewEmployee(Employee* head)
 {
 	/* This function adds new employee to the system.
-	It adds new employee in the end of the employees list
+	It adds new employee in the begining of the employees list to keep complexity O(1)
 	*/
 	Employee* new_employee = (Employee*)malloc(sizeof(Employee));
 	char log_txt[100];
@@ -113,13 +113,16 @@ void AddNewEmployee(Employee* head)
 	scanf("%s", &new_employee->password);
 	printf("Level:\n");
 	scanf("%d", &new_employee->level);
-	Employee* current = head;
-	while (current->next != NULL)
-	{
-		current = current->next;
-	}
-	current->next = new_employee;
-	new_employee->next = NULL;
+	new_employee->next = head;
+	head = new_employee;
+	//! OLD IMPLEMENTATION:
+	//Employee* current = head;
+	//while (current->next != NULL)
+	//{
+	//	current = current->next;
+	//}
+	//current->next = new_employee;
+	//new_employee->next = NULL;
 	sprintf(log_txt, "the employee: %s %s created as new employee with level %d\n", new_employee->username, new_employee->firstname, new_employee->level);
 	AddLog(log_txt);
 	printf("press any key to continue\n");
