@@ -47,5 +47,8 @@
     <ClCompile Include="logs.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="customer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

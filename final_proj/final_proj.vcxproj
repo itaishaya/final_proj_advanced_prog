@@ -27,6 +27,7 @@
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="customer.c" />
     <ClCompile Include="employee.c" />
     <ClCompile Include="item.c" />
     <ClCompile Include="logs.c" />
