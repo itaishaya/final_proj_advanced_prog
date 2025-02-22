@@ -16,21 +16,31 @@ void SearchCustomer(Customer* head)
 	* This function complexity is O(n) n - customers list length because this list is not sorted
 	*/
 	Customer* current = head->next;
-	int id,found=0;
+	int id;
+	bool found = false;
+	char log_txt[100];
 	printf("Enter ID of the customer you are looking for:");
 	scanf("%d", &id);
 	while (current != NULL)
 	{
 		if (id == current->id)
 		{
-			found = 1;
+			// found costumer with this ID
+			found = true;
 			PrintCustomerDetails(current);
+			sprintf(log_txt, "Searched and found customer with ID:%d, printed customer's details\n", id);
+			AddLog(log_txt);
+			printf("Press any key to continue\n");
+			_getch();
+			return;
 		}
 		current = current->next;
 	}
 	if (!found)
 	{
 		printf("Costumer: %0d not found!", id);
+		sprintf(log_txt, "Searched and not found customer with ID:%d\n", id);
+		AddLog(log_txt);
 	}
 	printf("Press any key to continue\n");
 	_getch();
@@ -56,7 +66,7 @@ void AddNewCustomer(Customer* head)
 	* This function complexity is O(n) n - length of list. due to sorted insertion.
 	*/
 	time_t currentTime;
-	int added = 0;
+	bool added = false;
 	Customer* new_customer = (Customer*)malloc(sizeof(Customer));
 	printf("Please enter these parametrs:\n");
 	printf("ID:\n");
@@ -78,9 +88,9 @@ void AddNewCustomer(Customer* head)
 		if (difftime(new_customer->join_date, current->join_date) < 0) 
 		{
 			//new customer joined earlier from existing customer
+			added = true;
 			if (prev == NULL)
 			{
-				added = 1;
 				new_customer->next = current;
 				head = new_customer;
 				break;
@@ -92,9 +102,12 @@ void AddNewCustomer(Customer* head)
 		prev = current;
 		current = current->next;
 	}
-	// new customer joined last (or first to join)
-	new_customer->next = NULL;
-	prev->next = new_customer;
+	if (!added)
+	{
+		// new customer joined last (or first to join)
+		new_customer->next = NULL;
+		prev->next = new_customer;
+	}
 	char log_txt[100];
 	sprintf(log_txt, "Customer %s %s with ID %d was added\n", new_customer->first_name, new_customer->last_name, new_customer->id);
 	AddLog(log_txt);
