@@ -18,6 +18,20 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="customer.h" />
+    <ClInclude Include="employee.h" />
+    <ClInclude Include="item.h" />
+    <ClInclude Include="logs.h" />
+    <ClInclude Include="menu.h" />
+    <ClInclude Include="utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="employee.c" />
+    <ClCompile Include="item.c" />
+    <ClCompile Include="logs.c" />
+    <ClCompile Include="utils.c" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -126,23 +140,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\customers.h" />
-    <ClInclude Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\employees.h" />
-    <ClInclude Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\items.h" />
-    <ClInclude Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\logs.h" />
-    <ClInclude Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\menu.h" />
-    <ClInclude Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\utils.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\customers.c" />
-    <ClCompile Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\employees.c" />
-    <ClCompile Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\items.c" />
-    <ClCompile Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\logs.c" />
-    <ClCompile Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\main.c" />
-    <ClCompile Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\menu.c" />
-    <ClCompile Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\utils.c" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -24,7 +24,7 @@ typedef struct customer
     struct customer* next;
 } Customer;
 
-void SearchCustomers(Customer* head);
-void PrintCustomerCharacteristics(Customer* current);
-void AddNewCustomer(Customer* head);
+void SearchCustomer(Customer* head);
+void PrintCustomerDetails(Customer* current);
+void AddCustomer(Customer* head);
 void RemoveCustomer(Customer* head);

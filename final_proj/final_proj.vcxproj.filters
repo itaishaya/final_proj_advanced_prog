@@ -15,45 +15,36 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\utils.h">
+    <ClInclude Include="employee.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\logs.h">
+    <ClInclude Include="customer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\menu.h">
+    <ClInclude Include="item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\items.h">
+    <ClInclude Include="logs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\employees.h">
+    <ClInclude Include="menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\customers.h">
+    <ClInclude Include="utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\utils.c">
+    <ClCompile Include="item.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\menu.c">
+    <ClCompile Include="employee.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\logs.c">
+    <ClCompile Include="utils.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\items.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\employees.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\customers.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Downloads\C_H_Files_Final_Project\main.c">
+    <ClCompile Include="logs.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
