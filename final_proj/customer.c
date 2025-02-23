@@ -58,7 +58,7 @@ void PrintCustomerDetails(Customer* current)
 	printf("Join date: %s\n", joinDateStr);
 }
 
-void AddNewCustomer(Customer* head)
+void AddCustomer(Customer* head)
 {
 	/* This function adds new customer to the costumers list.
 	* It receives from the user the costumer details and insert it to the costumers list.

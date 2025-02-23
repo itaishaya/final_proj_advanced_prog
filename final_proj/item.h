@@ -27,7 +27,7 @@ typedef struct review {
 
 void AddNewItem(Item* head);
 void printItemDetails(Item* item);
-int searchItems(Item* head);
+int searchItem(Item* head);
 void UpdateItem(Item* head);
 void RemoveItem(Item* head);
 void SellItem(Item* items_head, ItemsOfCustomer* item_of_customer_head);

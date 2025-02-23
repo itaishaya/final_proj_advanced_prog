@@ -77,7 +77,7 @@ void printItemDetails(Item* item)
 	printf("Item inventory: %d\n\n", item->inventory);
 }
 
-int searchItems(Item* head) 
+int searchItem(Item* head) 
 {
     /* This function searches item in the items list
     * It prints a menu for the search criterias.
