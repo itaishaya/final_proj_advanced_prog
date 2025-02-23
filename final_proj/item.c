@@ -494,9 +494,9 @@ void AddCustomerReview(Review* review_head)
 	prev->next = newReview;
 
 	printf("Review added successfully\n");
-	char log[100];
-	sprintf(log, "Review for %s (ID: %d) added.\n", newReview->item_type, newReview->item_id);
-	LogAction(log);
+	char log_txt[100];
+	sprintf(log_txt, "Review for %s (ID: %d) added.\n", newReview->item_type, newReview->item_id);
+	AddLog(log_txt);
 	printf("press any key to continue\n");
 	_getch();
 }
@@ -536,7 +536,7 @@ void ReturnItem(Item* items_head, ItemsOfCustomer* items_of_customer_head)
 	 * It updates the inventory and removes purchases as necessary
 	 * Complexity: O(n), where n - number of purchases of customer
 	 */
-	char log[100];
+	char log_txt[100];
 	int customer_id, item_id, return_qty, available_qty = 0;
 	time_t currentTime = time(NULL);
 
@@ -579,8 +579,8 @@ void ReturnItem(Item* items_head, ItemsOfCustomer* items_of_customer_head)
 					curr->item_quantity -= temp_qty;
 					UpdateReturningInItemList(items_head, curr, temp_qty);
 					printf("Return successful\n");
-					sprintf(log, "Customer %d returned %d of item %d\n", customer_id, return_qty, item_id);
-					LogAction(log);
+					sprintf(log_txt, "Customer %d returned %d of item %d\n", customer_id, return_qty, item_id);
+					AddLog(log_txt);
 					break;
 				}
 				temp_qty -= curr->item_quantity;
