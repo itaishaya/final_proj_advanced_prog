@@ -174,4 +174,115 @@ int chooseOption(unsigned int level, Employee* employee_head, Item* item_head, C
     showMenu(level, employee_head, item_head, customers_head, items_of_customer_head, review_head);
 }
 
+void run_system(Employee* employee_head)
+{
+    /* This function initializes the program. It reads data from files and starts the menu function
+    * This functions comlexity is linear due to reads of files and login function (assume O(n))
+    * When this function stops and the showMenu function ends, it closes the program and saves the 
+    * lists to files using shutdown_system function
+    */
+    Item* item_head = File2ListItems();
+    Customer* customers_head = File2ListCustomers();
+    ItemsOfCustomer* items_of_customer_head = File2ListItemsOfCustomer();
+    Review* review_head = File2ListReviews();
+    Employee* currentEmployee = login(employee_head);
 
+    if (currentEmployee == NULL)
+    {
+        printf("Login failed\n");
+        shutdown_system(employee_head, item_head, customers_head, items_of_customer_head, review_head);
+        return;
+    }
+    showMenu(currentEmployee->level, employee_head, item_head, customers_head, items_of_customer_head, review_head);
+    shutdown_system(employee_head, item_head, customers_head, items_of_customer_head, review_head);
+}
+
+void shutdown_system(Employee* employee_head, Item* item_head, Customer* customers_head, ItemsOfCustomer* items_of_customer_head, Review* review_head)
+{
+    /* This function copies all Lists containing data to files to close the program properly
+    * This function complexity is linear due to the list read and file write
+    */
+    ListCustomers2File(customers_head);
+    ListEmployees2File(employee_head);
+    ListItems2File(item_head);
+    ListItemsOfCustomer2File(items_of_customer_head);
+    ListReviews2File(review_head);
+}
+
+void ListCustomers2File(Customer* head)
+{
+    /* This function copies all customers in the list to a customer text file
+    * This function complexity is O(n) n - length of customers file
+    */
+    FILE* file = fopen("customers.txt", "w");
+    Customer* current = head->next;
+    while (current != NULL)
+    {
+        char joinDateStr[11];
+        strftime(joinDateStr, sizeof(joinDateStr), "%d/%m/%Y", localtime(&current->join_date));
+
+        fprintf(file, "%d\t%s\t%s\t%s\n", current->id, current->first_name, current->last_name, joinDateStr);
+        current = current->next;
+    }
+    fclose(file);
+}
+
+void ListEmployees2File(Employee* head)
+{
+    /* This function copies all employees in the list to a employees text file
+    * This function complexity is O(n) n - length of employees list
+    */
+    FILE* file = fopen("employees.txt", "w");
+    Employee* current = head;
+    while (current != NULL)
+    {
+        fprintf(file, "%s\t%s\t%s\t%d\n", current->username, current->firstname, current->password, current->level);
+        current = current->next;
+    }
+    fclose(file);
+}
+
+void ListItems2File(Item* head)
+{
+    /* This function copies all items in the list to a items binary file
+    * This function complexity is O(n) n - length of items list
+    */
+    FILE* file = fopen("items.bin", "wb");
+    Item* current = head->next;
+    while (current != NULL)
+    {
+        fwrite(current, sizeof(Item), 1, file);
+        current = current->next;
+    }
+    fclose(file);
+}
+
+void ListItemsOfCustomer2File(ItemsOfCustomer* head)
+{
+    /* This function copies all items of customer in the list to a binary file
+    * This function complexity is O(n) n - length of list
+    */
+    FILE* file = fopen("items_of_customer.bin", "wb");
+    ItemsOfCustomer* current = head->next;
+    while (current != NULL)
+    {
+        fwrite(current, sizeof(ItemsOfCustomer), 1, file);
+        current = current->next;
+    }
+    fclose(file);
+}
+
+void ListReviews2File(Review* head)
+{
+    /* This function copies all reviews of customers in the reviews list to a file
+    * This function complexity is O(n) n - length of list
+    */
+    FILE* file = fopen("reviews.txt", "w");
+    Review* current = head->next;
+    while (current != NULL)
+    {
+        fprintf(file, "%d\t%s\t%d\n", current->item_id, current->item_type, current->customer_review);
+        current = current->next;
+    }
+    fclose(file);
+}
