@@ -286,3 +286,142 @@ void ListReviews2File(Review* head)
     }
     fclose(file);
 }
+
+
+Customer* File2ListCustomers()
+{
+    /* This function copies the customers from the file to a customers list
+    * This function complexity is O(n) n - length of customers list
+    */
+    Customer* new_customer = NULL;
+    Customer* head = (Customer*)malloc(sizeof(Customer));
+    head->id = 0;
+    head->next = NULL;
+    Customer* current = head;
+    FILE* file = fopen("customers.txt", "r");
+    if (file == NULL)
+    {
+        return head;
+    }
+    char join_date_str[11];
+    while (!feof(file))
+    {
+        new_customer = (Customer*)malloc(sizeof(Customer));
+        if (fscanf(file, "%d\t%s\t%s\t%s\n", &new_customer->id, &new_customer->first_name, &new_customer->last_name, &join_date_str) != EOF) {
+            new_customer->join_date = convertStringToTime(join_date_str);
+            new_customer->next = NULL;
+            current->next = new_customer;
+            current = new_customer;
+        }
+    }
+    free(new_customer);
+    fclose(file);
+    return head;
+}
+
+Employee* File2ListEmployees()
+{
+    /* This function creates an employees list from an employees file
+    * This function complexity is O(n) n - length of employees list
+    */
+    FILE* file = fopen("employees.txt", "r");
+    Employee* new_employee = NULL;
+    Employee* head = (Employee*)malloc(sizeof(Employee));
+    Employee* current = head;
+    head->next = NULL;
+    fscanf(file, "%s\t%s\t%s\t%d\n", &head->username, &head->firstname, &head->password, &head->level);
+    while (!feof(file))
+    {
+        new_employee = (Employee*)malloc(sizeof(Employee));
+        fscanf(file, "%s\t%s\t%s\t%d\n", &new_employee->username, &new_employee->firstname, &new_employee->password, &new_employee->level);
+        new_employee->next = NULL;
+        current->next = new_employee;
+        current = new_employee;
+    }
+    free(new_employee);
+    fclose(file);
+    return head;
+}
+
+Item* File2ListItems()
+{
+    /* This function copies data from items file to a list of items
+    * This function complexity is O(n) n - length of items list
+    */
+    Item* head = (Item*)malloc(sizeof(Item));
+    head->id = 0;
+    head->next = NULL;
+    Item* current = head;
+    FILE* file = fopen("items.bin", "rb");
+    Item* new_item;
+    if (file == NULL)
+    {
+        return current;
+    }
+    head->id = 0;
+    head->next = NULL;
+    Item* current = head;
+    while (new_item = (Item*)malloc(sizeof(Item)) && fread(new_item, sizeof(Item), 1, file) == 1)
+    {
+        new_item->next = NULL;
+        current->next = new_item;
+        current = new_item;
+    }
+    free(new_item);
+    fclose(file);
+    return head;
+}
+
+ItemsOfCustomer* File2ListItemsOfCustomer()
+{
+    /* This function copies data from items of customer binary file to a items of customer list
+    * This function complexity is O(n) n - length of items of customer list
+    */
+    ItemsOfCustomer* head = (ItemsOfCustomer*)malloc(sizeof(ItemsOfCustomer));
+    head->customer_id = 0;
+    head->next = NULL;
+    ItemsOfCustomer* current = head;
+    FILE* file = fopen("items_of_customer.bin", "rb");
+    if (file == NULL)
+    {
+        return head;
+    }
+    ItemsOfCustomer* new_item_of_customer = NULL;
+    while ((new_item_of_customer = (ItemsOfCustomer*)malloc(sizeof(ItemsOfCustomer))) && fread(new_item_of_customer, sizeof(ItemsOfCustomer), 1, file))
+    {
+        new_item_of_customer->next = NULL;
+        current->next = new_item_of_customer;
+        current = new_item_of_customer;
+    }
+    free(new_item_of_customer);
+    fclose(file);
+    return head;
+}
+
+Review* File2ListReviews()
+{
+    /* This function copies reviews file to a reviews list
+    * This function complexity is O(n) n - length of reviews list
+    */
+    Review* head = (Review*)malloc(sizeof(Review));
+    head->item_id = 0;
+    head->next = NULL;
+    Review* current = head;
+    FILE* file = fopen("reviews.txt", "r");
+    Review* new_review = NULL;
+    if (file == NULL)
+    {
+        return current;
+    }
+    while (!feof(file))
+    {
+        new_review = (Review*)malloc(sizeof(Review));
+        if (fscanf(file, "%d\t%s\t%d\n", &new_review->item_id, &new_review->item_type, &new_review->customer_review) != EOF) {
+            new_review->next = NULL;
+            current->next = new_review;
+            current = new_review;
+        }
+    }
+    fclose(file);
+    return head;
+}
