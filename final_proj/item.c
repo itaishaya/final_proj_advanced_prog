@@ -3,6 +3,7 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include "menu.h"
@@ -35,6 +36,17 @@ void AddNewItem(Item* head)
 		newItem->inStock = true;
 	else
 		newItem->inStock = false;
+	if (head == NULL)
+	{
+		head = newItem;
+		newItem->next = NULL;
+		sprintf(log_txt, "Item %s was added to the store list\n", newItem->item_type);
+		AddLog(log_txt);
+		printf("Item added successfully\n");
+		printf("press any key to continue\n");
+		_getch();
+		return;
+	}
 	Item* current = head->next;
 	Item* prev = head;
 

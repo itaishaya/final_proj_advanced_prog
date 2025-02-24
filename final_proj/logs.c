@@ -5,6 +5,7 @@
 
 #include "logs.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 
 void AddLog(const char* text)

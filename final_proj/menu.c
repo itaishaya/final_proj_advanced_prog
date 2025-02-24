@@ -2,6 +2,7 @@
 // Itai Shaya 207033622
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "menu.h"
 #include "item.h"
 #include "employee.h"
@@ -248,6 +249,10 @@ void ListItems2File(Item* head)
     * This function complexity is O(n) n - length of items list
     */
     FILE* file = fopen("items.bin", "wb");
+    if (head == NULL)
+    {
+        fclose(file);
+    }
     Item* current = head->next;
     while (current != NULL)
     {
@@ -343,31 +348,80 @@ Employee* File2ListEmployees()
     return head;
 }
 
-Item* File2ListItems()
-{
-    /* This function copies data from items file to a list of items
-    * This function complexity is O(n) n - length of items list
-    */
+//Item* File2ListItems()
+//{
+//    /* This function copies data from items file to a list of items
+//    * This function complexity is O(n) n - length of items list
+//    */
+//    Item* head = (Item*)malloc(sizeof(Item));
+//    head->id = 0;
+//    head->next = NULL;
+//    Item* current = head;
+//    FILE* file = fopen("items.bin", "rb");
+//    Item* new_item = NULL;
+//    if (file == NULL)
+//    {
+//        return current;
+//    }
+//    while (new_item = (Item*)malloc(sizeof(Item)) && fread(new_item, sizeof(Item), 1, file) == 1)
+//    {
+//        new_item->next = NULL;
+//        current->next = new_item;
+//        current = new_item;
+//    }
+//    free(new_item);
+//    fclose(file);
+//    return head;
+//}
+
+Item* File2ListItems() {
     Item* head = (Item*)malloc(sizeof(Item));
-    head->id = 0;
+    if (head == NULL) {
+        return NULL; // Handle allocation failure for head
+    }
+    head->id = 0; // Dummy node
     head->next = NULL;
     Item* current = head;
     FILE* file = fopen("items.bin", "rb");
-    Item* new_item = NULL;
-    if (file == NULL)
-    {
-        return current;
+    if (file == NULL) {
+        free(head);
+        return NULL; // Handle file open failure
     }
-    while (new_item = (Item*)malloc(sizeof(Item)) && fread(new_item, sizeof(Item), 1, file) == 1)
-    {
+
+    Item* new_item = (Item*)malloc(sizeof(Item)); // Allocate the first item
+    if (new_item == NULL) {
+        free(head);
+        fclose(file);
+        return NULL;
+    }
+
+    while (fread(new_item, sizeof(Item), 1, file) == 1) {
         new_item->next = NULL;
         current->next = new_item;
         current = new_item;
+
+        new_item = (Item*)malloc(sizeof(Item)); // Allocate for the next item
+        if (new_item == NULL) {
+            // Handle memory allocation failure
+            // free all allocated items.
+            Item* temp = head->next;
+            while (temp != NULL) {
+                Item* next = temp->next;
+                free(temp);
+                temp = next;
+            }
+            free(head);
+            fclose(file);
+            return NULL;
+        }
     }
-    free(new_item);
+    free(new_item); //free the last allocated one, because it was not added to the list.
     fclose(file);
-    return head;
+    Item* return_head = head->next;
+    free(head);
+    return return_head;
 }
+
 
 ItemsOfCustomer* File2ListItemsOfCustomer()
 {

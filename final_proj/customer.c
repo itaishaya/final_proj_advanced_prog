@@ -2,6 +2,7 @@
 // Itai Shaya 207033622
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 #include "customer.h"
 #include "menu.h"

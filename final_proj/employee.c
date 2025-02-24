@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "utils.h"
 #include "employee.h"
 #include "logs.h"
