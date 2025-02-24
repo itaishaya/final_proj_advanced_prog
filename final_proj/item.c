@@ -181,7 +181,7 @@ int searchItem(Item* head)
 
         if (found)
         {
-            printItemCharacteristics(current);
+            printItemDetails(current);
         }
         current = current->next;
     }

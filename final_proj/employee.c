@@ -32,6 +32,10 @@ Employee* createDefaultAdmin()
 	*/
 	FILE* employees_file = fopen("employees.txt", "w");
 	Employee* new_employee = (Employee*)malloc(sizeof(Employee));
+	if (new_employee == NULL) {
+		fclose(employees_file);
+		return NULL; // Handle allocation error
+	}
 	strcpy(new_employee->username, "admin");
 	strcpy(new_employee->firstname, "manager");
 	strcpy(new_employee->password, "12345678");
@@ -48,9 +52,9 @@ Employee* createDefaultAdmin()
 	fclose(items_of_customer_file);
 	fclose(log_file);
 	fclose(reviews_file);
-	char log[100];
-	sprintf(log, "%s %s created a default admin user\n", new_employee->username, new_employee->firstname);
-	AddLog(log_file);
+	char log_txt[100];
+	sprintf(log_txt, "%s %s created a default admin user\n", new_employee->username, new_employee->firstname);
+	AddLog(log_txt);
 	return new_employee;
 }
 

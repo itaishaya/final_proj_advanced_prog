@@ -130,7 +130,7 @@ int chooseOption(unsigned int level, Employee* employee_head, Item* item_head, C
         if (level < 3) 
             SellItem(item_head, items_of_customer_head);
         else 
-            GetRreviewsBySpecificItem(review_head);
+            GetReviewsBySpecificItem(review_head);
         break;
     case 9:
         if (level < 3) 
@@ -150,7 +150,7 @@ int chooseOption(unsigned int level, Employee* employee_head, Item* item_head, C
         break;
     case 12:
         if (level < 3) 
-            GetRreviewsBySpecificItem(review_head);
+            GetReviewsBySpecificItem(review_head);
         break;
     case 13:
         if (level < 3) 
@@ -353,14 +353,11 @@ Item* File2ListItems()
     head->next = NULL;
     Item* current = head;
     FILE* file = fopen("items.bin", "rb");
-    Item* new_item;
+    Item* new_item = NULL;
     if (file == NULL)
     {
         return current;
     }
-    head->id = 0;
-    head->next = NULL;
-    Item* current = head;
     while (new_item = (Item*)malloc(sizeof(Item)) && fread(new_item, sizeof(Item), 1, file) == 1)
     {
         new_item->next = NULL;

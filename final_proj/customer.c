@@ -8,6 +8,8 @@
 #include "item.h"
 #include "logs.h"
 
+#define _CRT_SECURE_NO_WARNINGS
+
 void SearchCustomer(Customer* head)
 {
 	/* This function search for a customer according to ID requested by the user.
