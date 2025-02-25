@@ -450,9 +450,12 @@ void PurchasedItemsByCustomer(ItemsOfCustomer* items_of_customer_head)
 			char purchaseDateStr[11];
 			strftime(purchaseDateStr, sizeof(purchaseDateStr), "%d/%m/%Y", localtime(&current->purchase_date));
 			printf("Customer ID: %d, Item ID: %d, Qty: %d, Price: %.2f, Date: %s\n", current->customer_id, current->item_id, current->item_quantity, current->item_price, purchaseDateStr);
+			
+			return;
 		}
 		current = current->next;
 	}
+	printf("Customer with ID: %d not found, return to menu.\n", customer_id);
 	printf("press any key to continue\n");
 	_getch();
 }

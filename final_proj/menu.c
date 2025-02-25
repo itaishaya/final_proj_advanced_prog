@@ -81,13 +81,13 @@ int chooseOption(unsigned int level, Employee* employee_head, Item* item_head, C
     /* This function let the user to choose option and does the appropriate task
     * It also contains a input check functionality
     */
-    int option;
-    scanf("%d", &option);
-    while (option < 1 || option > 3 ) 
+    int option,check;
+    check = scanf("%d", &option);
+    while (check != 1)
     {
         printf("Invalid option. Try again\n");
         while (getchar() != '\n');
-        scanf("%d", &option);
+        check = scanf("%d", &option);
     }
 
     switch (option) {
