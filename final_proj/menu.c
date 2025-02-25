@@ -95,7 +95,7 @@ int chooseOption(unsigned int level, Employee* employee_head, Item* item_head, C
         searchItem(item_head);
         break;
     case 2:
-        AddNewItem(item_head);
+        AddNewItem(&item_head);
         break;
     case 3:
         if (level < 3) 
@@ -252,6 +252,7 @@ void ListItems2File(Item* head)
     if (head == NULL)
     {
         fclose(file);
+        return;
     }
     Item* current = head->next;
     while (current != NULL)

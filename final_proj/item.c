@@ -11,7 +11,7 @@
 #include "logs.h"
 #include "customer.h"
 
-void AddNewItem(Item* head)
+void AddNewItem(Item** head)
 {
 	/* This function adds new item to the items list it receives the item properties from the user
 	* it adds the item to the sorted list according to the ID (serial number)
@@ -36,10 +36,10 @@ void AddNewItem(Item* head)
 		newItem->inStock = true;
 	else
 		newItem->inStock = false;
-	if (head == NULL)
+	newItem->next = NULL;
+	if (*head == NULL)
 	{
-		head = newItem;
-		newItem->next = NULL;
+		*head = newItem;
 		sprintf(log_txt, "Item %s was added to the store list\n", newItem->item_type);
 		AddLog(log_txt);
 		printf("Item added successfully\n");
@@ -47,31 +47,24 @@ void AddNewItem(Item* head)
 		_getch();
 		return;
 	}
-	Item* current = head->next;
-	Item* prev = head;
+	Item* current = *head;
+	Item* prev = NULL;
 
-	while (current != NULL)
-	{
-		if (newItem->id < current->id)
-		{
-			//adding item in the middle of the list
-			prev->next = newItem; 
-			newItem->next = current;
-			sprintf(log_txt, "Item %s was added to the store list\n", newItem->item_type);
-			AddLog(log_txt);
-			printf("Item added successfully\n");
-			printf("press any key to continue\n");
-			_getch();
-			return;
-		}
+	while (current != NULL && newItem->id > current->id) {
 		prev = current;
 		current = current->next;
 	}
-	//adding to the end of the list (or first item)
-	newItem->next = NULL; 
-	prev->next = newItem;
-	sprintf(log_txt, "Item %s was added to the store list\n", newItem->item_type);
-	AddLog(log_txt);
+
+	if (prev == NULL) {
+		// Insert at head
+		newItem->next = *head;
+		*head = newItem;
+	}
+	else {
+		// Insert in the middle or at the end
+		prev->next = newItem;
+		newItem->next = current;
+	}
 	printf("Item added successfully\n");
 	printf("press any key to continue\n");
 	_getch();
@@ -156,7 +149,7 @@ int searchItem(Item* head)
         return 0;
     }
 
-    Item* current = head->next;
+    Item* current = head;
     bool found = false;
 
     while (current != NULL) {
@@ -347,6 +340,7 @@ void SellItem(Item* items_head, ItemsOfCustomer* items_of_customer_head)
 	char log_txt[100];
 	int item_id, customer_id, count, credit_card;
 	bool found = false;
+
 	printf("Enter the id of the customer that wants to buy:\n");
 	scanf("%d", &customer_id);
 	printf("Enter the id of the item that the customer wants to buy:\n");
@@ -354,7 +348,7 @@ void SellItem(Item* items_head, ItemsOfCustomer* items_of_customer_head)
 	printf("Enter the count of the item you want to buy:\n");
 	scanf("%d", &count);
 
-	if (count > 3) 
+	if (count > 3)
 	{
 		printf("You're allowed to buy only 3 items\n");
 		printf("press any key to continue\n");
@@ -362,15 +356,23 @@ void SellItem(Item* items_head, ItemsOfCustomer* items_of_customer_head)
 		return;
 	}
 
+	// Check if items_head is NULL
+	if (items_head == NULL) {
+		printf("Item list is empty!\n");
+		printf("press any key to continue\n");
+		_getch();
+		return;
+	}
+
 	// Find the item
-	Item* current_item = items_head->next;
+	Item* current_item = items_head;
 	while (current_item != NULL && !found)
 	{
 		if (current_item->id == item_id)
 		{
 			found = true;
 		}
-		else 
+		else
 		{
 			current_item = current_item->next;
 		}
@@ -378,7 +380,7 @@ void SellItem(Item* items_head, ItemsOfCustomer* items_of_customer_head)
 
 	if (!found) {
 		printf("Item not found!\n");
-		sprintf(log_txt, "Costumer with ID:%d tried tou buy:%d item(s) with ID %d but the item not found\n", customer_id, count, item_id);
+		sprintf(log_txt, "Customer with ID:%d tried to buy:%d item(s) with ID %d but the item was not found\n", customer_id, count, item_id);
 		AddLog(log_txt);
 		printf("press any key to continue\n");
 		_getch();
@@ -387,7 +389,7 @@ void SellItem(Item* items_head, ItemsOfCustomer* items_of_customer_head)
 
 	if (!current_item->inStock || count > current_item->inventory) {
 		printf("We only have %d items, you can try again\n", current_item->inventory);
-		sprintf(log_txt, "Costumer with ID:%d tried tou buy:%d item(s) with ID %d but there was only %d items\n", customer_id, count, item_id, current_item->inventory);
+		sprintf(log_txt, "Customer with ID:%d tried to buy:%d item(s) with ID %d but there were only %d items\n", customer_id, count, item_id, current_item->inventory);
 		AddLog(log_txt);
 		printf("press any key to continue\n");
 		_getch();
@@ -405,6 +407,10 @@ void SellItem(Item* items_head, ItemsOfCustomer* items_of_customer_head)
 
 	// Create new purchase record
 	ItemsOfCustomer* newItemsOfCustomer = (ItemsOfCustomer*)malloc(sizeof(ItemsOfCustomer));
+	if (!newItemsOfCustomer) {
+		printf("Memory allocation failed!\n");
+		return;
+	}
 	newItemsOfCustomer->customer_id = customer_id;
 	newItemsOfCustomer->item_id = item_id;
 	newItemsOfCustomer->item_quantity = count;
@@ -431,6 +437,7 @@ void SellItem(Item* items_head, ItemsOfCustomer* items_of_customer_head)
 	_getch();
 }
 
+
 void PurchasedItemsByCustomer(ItemsOfCustomer* items_of_customer_head)
 {
 	/* This function displays all purchased items by a specific customer.
@@ -450,7 +457,6 @@ void PurchasedItemsByCustomer(ItemsOfCustomer* items_of_customer_head)
 			char purchaseDateStr[11];
 			strftime(purchaseDateStr, sizeof(purchaseDateStr), "%d/%m/%Y", localtime(&current->purchase_date));
 			printf("Customer ID: %d, Item ID: %d, Qty: %d, Price: %.2f, Date: %s\n", current->customer_id, current->item_id, current->item_quantity, current->item_price, purchaseDateStr);
-			
 			return;
 		}
 		current = current->next;
@@ -527,7 +533,7 @@ void GetReviewsBySpecificItem(Review* review_head)
 	scanf("%d", &item_id);
 	printf("Reviews for item ID %d:\n", item_id);
 
-	Review* current = review_head->next;
+	Review* current = review_head;
 	while (current != NULL) 
 	{
 		if (current->item_id == item_id) 
@@ -562,7 +568,7 @@ void ReturnItem(Item* items_head, ItemsOfCustomer* items_of_customer_head)
 	printf("Enter Quantity to Return:\n");
 	scanf("%d", &return_qty);
 
-	ItemsOfCustomer* current = items_of_customer_head->next;
+	ItemsOfCustomer* current = items_of_customer_head;
 	while (current != NULL) 
 	{
 		if (difftime(currentTime, current->purchase_date) / (60 * 60 * 24) < 15 &&
@@ -616,7 +622,7 @@ void UpdateReturningInItemList(Item* items_head, ItemsOfCustomer* returned_item,
 	 * It restores the inventory and sets inStock status accordingly
 	 * Complexity: O(n), where n - length of items list
 	 */
-	Item* current = items_head->next;
+	Item* current = items_head;
 	while (current != NULL) 
 	{
 		if (current->id == returned_item->item_id) 
