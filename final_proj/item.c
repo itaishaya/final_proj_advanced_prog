@@ -538,7 +538,7 @@ void GetReviewsBySpecificItem(Review* review_head)
 	{
 		if (current->item_id == item_id) 
 		{
-			printf("%d ", current->customer_review);
+			printf("%d \n", current->customer_review);
 			counter++;
 		}
 		current = current->next;
