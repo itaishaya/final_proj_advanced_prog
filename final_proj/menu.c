@@ -249,11 +249,11 @@ void ListItems2File(Item* head)
     * This function complexity is O(n) n - length of items list
     */
     FILE* file = fopen("items.bin", "wb");
-    if (head == NULL)
+    /*if (head == NULL)
     {
         fclose(file);
         return;
-    }
+    }*/
     Item* current = head;
     while (current != NULL)
     {

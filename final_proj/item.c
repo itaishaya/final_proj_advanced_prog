@@ -283,7 +283,7 @@ void UpdateItem(Item* head)
 	}
 	if (!found)
 	{
-		printf("item with ID:%d not found!");
+		printf("item with ID:%d not found!", id);
 		sprintf(log_txt,  "Item with ID %d was not found \n", id);
 		AddLog(log_txt);
 	}
