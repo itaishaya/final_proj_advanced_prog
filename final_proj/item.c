@@ -151,6 +151,7 @@ int searchItem(Item* head)
 
     Item* current = head;
     bool found = false;
+	int counter_found = 0;
 
     while (current != NULL) {
         switch (select) {
@@ -187,11 +188,13 @@ int searchItem(Item* head)
         if (found)
         {
             printItemDetails(current);
+			found = false;
+			counter_found++;
         }
         current = current->next;
     }
 
-    if (!found)
+    if (!counter_found)
     {
         printf("No matching items found.\n");
         printf("Press any key to continue\n");

@@ -344,7 +344,6 @@ Employee* File2ListEmployees()
         current->next = new_employee;
         current = new_employee;
     }
-    free(new_employee);
     fclose(file);
     return head;
 }
