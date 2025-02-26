@@ -37,16 +37,6 @@ void AddNewItem(Item* head)
 	else
 		newItem->inStock = false;
 	newItem->next = NULL;
-	if (head == NULL)
-	{
-		head = newItem;
-		sprintf(log_txt, "Item %s was added to the store list\n", newItem->item_type);
-		AddLog(log_txt);
-		printf("Item added successfully\n");
-		printf("press any key to continue\n");
-		_getch();
-		return;
-	}
 	Item* current = head->next;
 	Item* prev = head;
 
@@ -54,17 +44,9 @@ void AddNewItem(Item* head)
 		prev = current;
 		current = current->next;
 	}
-
-	if (prev == NULL) {
-		// Insert at head
-		newItem->next = head;
-		head = newItem;
-	}
-	else {
-		// Insert in the middle or at the end
-		prev->next = newItem;
-		newItem->next = current;
-	}
+	// Insert in the middle or at the end
+	prev->next = newItem;
+	newItem->next = current;
 	printf("Item added successfully\n");
 	printf("press any key to continue\n");
 	_getch();

@@ -376,37 +376,23 @@ Employee* File2ListEmployees()
 
 Item* File2ListItems()
 {
+    Item* head = (Item*)malloc(sizeof(Item));
+    head->id = 0;
+    head->next = NULL;
     FILE* file = fopen("items.bin", "rb");
     if (file == NULL)
     {
-        return NULL; // Return NULL if the file cannot be opened
+        return head; // Return NULL if the file cannot be opened
     }
-    Item* head = (Item*)malloc(sizeof(Item));
-    Item* current = NULL;
-    head->id = 0;
-    head->next = NULL;
-    Item temp;
-    while (fread(&temp, sizeof(Item), 1, file) == 1)
+    Item* current = head;
+    Item *temp = (Item*)malloc(sizeof(Item));
+    while (fread(temp, sizeof(Item), 1, file) == 1)
     {
-        Item* newItem = (Item*)malloc(sizeof(Item));
-        if (newItem == NULL)
-        {
-            fclose(file);
-            return head; // Return what we have so far in case of allocation failure
-        }
-        *newItem = temp; // Copy the read data
-        newItem->next = NULL;
-
-        if (head == NULL)
-        {
-            head = newItem;
-            current = newItem;
-        }
-        else
-        {
-            current->next = newItem;
-            current = newItem;
-        }
+        Item* new_item = (Item*)malloc(sizeof(Item));
+        new_item = temp;
+        new_item->next = NULL; // Copy the read data
+        current->next = new_item;
+        current = current->next;
     }
 
     fclose(file);
