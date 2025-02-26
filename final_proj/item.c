@@ -214,7 +214,7 @@ void UpdateItem(Item* head)
 	bool found = false;
 	printf("Enter the id of the item you want to update:\n");
 	scanf("%d", &id);
-	Item* current = head->next;
+	Item* current = head;
 	while (current != NULL)
 	{
 		if (current->id == id)

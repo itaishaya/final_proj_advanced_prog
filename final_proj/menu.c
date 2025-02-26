@@ -254,7 +254,7 @@ void ListItems2File(Item* head)
         fclose(file);
         return;
     }
-    Item* current = head->next;
+    Item* current = head;
     while (current != NULL)
     {
         fwrite(current, sizeof(Item), 1, file);
@@ -375,53 +375,45 @@ Employee* File2ListEmployees()
 //    return head;
 //}
 
-Item* File2ListItems() {
-    Item* head = (Item*)malloc(sizeof(Item));
-    if (head == NULL) {
-        return NULL; // Handle allocation failure for head
-    }
-    head->id = 0; // Dummy node
-    head->next = NULL;
-    Item* current = head;
+Item* File2ListItems()
+{
     FILE* file = fopen("items.bin", "rb");
-    if (file == NULL) {
-        free(head);
-        return NULL; // Handle file open failure
+    if (file == NULL)
+    {
+        return NULL; // Return NULL if the file cannot be opened
     }
 
-    Item* new_item = (Item*)malloc(sizeof(Item)); // Allocate the first item
-    if (new_item == NULL) {
-        free(head);
-        fclose(file);
-        return NULL;
-    }
+    Item* head = NULL;
+    Item* current = NULL;
 
-    while (fread(new_item, sizeof(Item), 1, file) == 1) {
-        new_item->next = NULL;
-        current->next = new_item;
-        current = new_item;
-
-        new_item = (Item*)malloc(sizeof(Item)); // Allocate for the next item
-        if (new_item == NULL) {
-            // Handle memory allocation failure
-            // free all allocated items.
-            Item* temp = head->next;
-            while (temp != NULL) {
-                Item* next = temp->next;
-                free(temp);
-                temp = next;
-            }
-            free(head);
+    Item temp;
+    while (fread(&temp, sizeof(Item), 1, file) == 1)
+    {
+        Item* newItem = (Item*)malloc(sizeof(Item));
+        if (newItem == NULL)
+        {
             fclose(file);
-            return NULL;
+            return head; // Return what we have so far in case of allocation failure
+        }
+        *newItem = temp; // Copy the read data
+        newItem->next = NULL;
+
+        if (head == NULL)
+        {
+            head = newItem;
+            current = newItem;
+        }
+        else
+        {
+            current->next = newItem;
+            current = newItem;
         }
     }
-    free(new_item); //free the last allocated one, because it was not added to the list.
+
     fclose(file);
-    Item* return_head = head->next;
-    free(head);
-    return return_head;
+    return head;
 }
+
 
 
 ItemsOfCustomer* File2ListItemsOfCustomer()
