@@ -11,7 +11,7 @@
 #include "logs.h"
 #include "customer.h"
 
-void AddNewItem(Item** head)
+void AddNewItem(Item* head)
 {
 	/* This function adds new item to the items list it receives the item properties from the user
 	* it adds the item to the sorted list according to the ID (serial number)
@@ -37,9 +37,9 @@ void AddNewItem(Item** head)
 	else
 		newItem->inStock = false;
 	newItem->next = NULL;
-	if (*head == NULL)
+	if (head == NULL)
 	{
-		*head = newItem;
+		head = newItem;
 		sprintf(log_txt, "Item %s was added to the store list\n", newItem->item_type);
 		AddLog(log_txt);
 		printf("Item added successfully\n");
@@ -47,8 +47,8 @@ void AddNewItem(Item** head)
 		_getch();
 		return;
 	}
-	Item* current = *head;
-	Item* prev = NULL;
+	Item* current = head->next;
+	Item* prev = head;
 
 	while (current != NULL && newItem->id > current->id) {
 		prev = current;
@@ -57,8 +57,8 @@ void AddNewItem(Item** head)
 
 	if (prev == NULL) {
 		// Insert at head
-		newItem->next = *head;
-		*head = newItem;
+		newItem->next = head;
+		head = newItem;
 	}
 	else {
 		// Insert in the middle or at the end
@@ -149,7 +149,7 @@ int searchItem(Item* head)
         return 0;
     }
 
-    Item* current = head;
+    Item* current = head->next;
     bool found = false;
 	int counter_found = 0;
 
@@ -217,7 +217,7 @@ void UpdateItem(Item* head)
 	bool found = false;
 	printf("Enter the id of the item you want to update:\n");
 	scanf("%d", &id);
-	Item* current = head;
+	Item* current = head->next;
 	while (current != NULL)
 	{
 		if (current->id == id)
@@ -368,7 +368,7 @@ void SellItem(Item* items_head, ItemsOfCustomer* items_of_customer_head)
 	}
 
 	// Find the item
-	Item* current_item = items_head;
+	Item* current_item = items_head->next;
 	while (current_item != NULL && !found)
 	{
 		if (current_item->id == item_id)

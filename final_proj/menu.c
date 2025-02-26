@@ -95,7 +95,7 @@ int chooseOption(unsigned int level, Employee* employee_head, Item* item_head, C
         searchItem(item_head);
         break;
     case 2:
-        AddNewItem(&item_head);
+        AddNewItem(item_head);
         break;
     case 3:
         if (level < 3) 
@@ -381,10 +381,10 @@ Item* File2ListItems()
     {
         return NULL; // Return NULL if the file cannot be opened
     }
-
-    Item* head = NULL;
+    Item* head = (Item*)malloc(sizeof(Item));
     Item* current = NULL;
-
+    head->id = 0;
+    head->next = NULL;
     Item temp;
     while (fread(&temp, sizeof(Item), 1, file) == 1)
     {
