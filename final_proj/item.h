@@ -30,7 +30,7 @@ void printItemDetails(Item* item);
 int searchItem(Item* head);
 void UpdateItem(Item* head);
 void RemoveItem(Item* head);
-void SellItem(Item* items_head, ItemsOfCustomer* item_of_customer_head);
+void SellItem(Item* items_head, ItemsOfCustomer* item_of_customer_head, Customer* customer_head);
 void PurchasedItemsByCustomer(ItemsOfCustomer* items_of_customer_head);
 void ShowProfit(ItemsOfCustomer* items_of_customer_head);
 void AddCustomerReview(Review* review_head);

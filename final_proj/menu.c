@@ -129,7 +129,7 @@ int chooseOption(unsigned int level, Employee* employee_head, Item* item_head, C
         break;
     case 8:
         if (level < 3) 
-            SellItem(item_head, items_of_customer_head);
+            SellItem(item_head, items_of_customer_head, customers_head);
         else 
             GetReviewsBySpecificItem(review_head);
         break;
@@ -324,7 +324,6 @@ Customer* File2ListCustomers()
             current = new_customer;
         }
     }
-    free(new_customer);
     fclose(file);
     return head;
 }

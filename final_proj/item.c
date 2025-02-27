@@ -313,7 +313,7 @@ void RemoveItem(Item* head)
 	_getch();
 }
 
-void SellItem(Item* items_head, ItemsOfCustomer* items_of_customer_head) 
+void SellItem(Item* items_head, ItemsOfCustomer* items_of_customer_head, Customer* customer_head) 
 {
 	/* This function processes the sale of an item to a customer.
 	 * It verifies the item ID, stock availability, and purchase constraints.
@@ -342,13 +342,44 @@ void SellItem(Item* items_head, ItemsOfCustomer* items_of_customer_head)
 	}
 
 	// Check if items_head is NULL
-	if (items_head == NULL) {
-		printf("Item list is empty!\n");
+	if (items_head->next == NULL) 
+	{
+		printf("Items list is empty!\n");
 		printf("press any key to continue\n");
 		_getch();
 		return;
 	}
 
+	if (customer_head->next == NULL)
+	{
+		printf("Customers list is empty!\n");
+		printf("press any key to continue\n");
+		_getch();
+		return;
+	}
+	// Find the customer
+	Customer* current_customer = customer_head->next;
+	while (current_customer != NULL && !found)
+	{
+		if (current_customer->id == customer_id)
+		{
+			found = true;
+		}
+		else
+		{
+			current_customer = current_customer->next;
+		}
+	}
+	if (!found) 
+	{
+		printf("Customer not found!\n");
+		sprintf(log_txt, "Customer with ID:%d tried to buy:%d item(s) with ID %d but the customer was not found\n", customer_id, count, item_id);
+		AddLog(log_txt);
+		printf("press any key to continue\n");
+		_getch();
+		return;
+	}
+	found = false;
 	// Find the item
 	Item* current_item = items_head->next;
 	while (current_item != NULL && !found)
