@@ -254,10 +254,14 @@ void ListItems2File(Item* head)
         fclose(file);
         return;
     }*/
-    Item* current = head;
+    Item* current = head->next;
+    Item* temp;
     while (current != NULL)
     {
-        fwrite(current, sizeof(Item), 1, file);
+        temp = (Item*)malloc(sizeof(Item));
+        temp = current;
+        temp->next = NULL;
+        fwrite(temp, sizeof(Item), 1, file);
         current = current->next;
     }
     fclose(file);
