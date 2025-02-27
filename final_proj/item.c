@@ -502,7 +502,7 @@ void ShowProfit(ItemsOfCustomer* items_of_customer_head)
 	_getch();
 }
 
-void AddCustomerReview(Review* review_head) 
+void AddCustomerReview(Review* review_head, Item* items_head) 
 {
 	/* This function adds a customer review for a specific item.
 	 * It ensures valid input for review scores (1-10) and inserts it in sorted order.
@@ -520,6 +520,28 @@ void AddCustomerReview(Review* review_head)
 		printf("Invalid number, try again\n");
 		scanf("%d", &newReview->customer_review);
 	}
+	Item* current_item = items_head->next;
+	bool found = false;
+	char log_txt[100];
+	while (current_item != NULL)
+	{
+		if (newReview->item_id == current_item->id && strcmp(newReview->item_type,current_item->item_type))
+		{
+			found = true;
+			break;
+		}	
+		current_item = current_item->next;
+	}
+	if (!found)
+	{
+		printf("Item ID or item Type was not found in items list\n");
+		sprintf(log_txt, "Review for %s (ID: %d) was'nt added, item type or id type were'nt found.\n", newReview->item_type, newReview->item_id);
+		AddLog(log_txt);
+		printf("press any key to continue\n");
+		_getch();
+		return;
+	}
+
 	Review* prev = review_head;
 	Review* current = review_head->next;
 	while (current != NULL && current->item_id < newReview->item_id) 
@@ -531,7 +553,6 @@ void AddCustomerReview(Review* review_head)
 	prev->next = newReview;
 
 	printf("Review added successfully\n");
-	char log_txt[100];
 	sprintf(log_txt, "Review for %s (ID: %d) added.\n", newReview->item_type, newReview->item_id);
 	AddLog(log_txt);
 	printf("press any key to continue\n");

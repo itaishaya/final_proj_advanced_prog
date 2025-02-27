@@ -137,7 +137,7 @@ int chooseOption(unsigned int level, Employee* employee_head, Item* item_head, C
         if (level < 3) 
             PurchasedItemsByCustomer(items_of_customer_head);
         else 
-            AddCustomerReview(review_head);
+            AddCustomerReview(review_head, item_head);
         break;
     case 10:
         if (level < 3)
@@ -155,7 +155,7 @@ int chooseOption(unsigned int level, Employee* employee_head, Item* item_head, C
         break;
     case 13:
         if (level < 3) 
-            AddCustomerReview(review_head);
+            AddCustomerReview(review_head, item_head);
         break;
     case 14:
         if (level == 1) 
@@ -249,20 +249,26 @@ void ListItems2File(Item* head)
     * This function complexity is O(n) n - length of items list
     */
     FILE* file = fopen("items.bin", "wb");
-    /*if (head == NULL)
-    {
-        fclose(file);
-        return;
-    }*/
     Item* current = head->next;
     Item* temp;
     while (current != NULL)
     {
         temp = (Item*)malloc(sizeof(Item));
-        temp = current;
+        if (temp == NULL)
+        {
+            fclose(file);
+            return;
+        }
+        temp->id = current->id;
+        strcpy(temp->country_made,current->country_made);
+        temp->inStock = current->inStock;
+        strcpy(temp->item_type, current->item_type);
+        temp->price = current->price;
+        strcpy(temp->manufacturing_date, current->manufacturing_date);
         temp->next = NULL;
         fwrite(temp, sizeof(Item), 1, file);
         current = current->next;
+        free(temp);
     }
     fclose(file);
 }
@@ -351,32 +357,6 @@ Employee* File2ListEmployees()
     return head;
 }
 
-//Item* File2ListItems()
-//{
-//    /* This function copies data from items file to a list of items
-//    * This function complexity is O(n) n - length of items list
-//    */
-//    Item* head = (Item*)malloc(sizeof(Item));
-//    head->id = 0;
-//    head->next = NULL;
-//    Item* current = head;
-//    FILE* file = fopen("items.bin", "rb");
-//    Item* new_item = NULL;
-//    if (file == NULL)
-//    {
-//        return current;
-//    }
-//    while (new_item = (Item*)malloc(sizeof(Item)) && fread(new_item, sizeof(Item), 1, file) == 1)
-//    {
-//        new_item->next = NULL;
-//        current->next = new_item;
-//        current = new_item;
-//    }
-//    free(new_item);
-//    fclose(file);
-//    return head;
-//}
-
 Item* File2ListItems()
 {
     Item* head = (Item*)malloc(sizeof(Item));
@@ -392,8 +372,16 @@ Item* File2ListItems()
     while (fread(temp, sizeof(Item), 1, file) == 1)
     {
         Item* new_item = (Item*)malloc(sizeof(Item));
-        new_item = temp;
-        new_item->next = NULL; // Copy the read data
+        if (new_item == NULL || temp == NULL)
+            return head;
+        new_item->id = temp->id;
+        strcpy(new_item->country_made, temp->country_made);
+        new_item->inStock = temp->inStock;
+        strcpy(new_item->item_type, temp->item_type);
+        new_item->price = temp->price;
+        new_item->inventory = temp->inventory;
+        strcpy(new_item->manufacturing_date, temp->manufacturing_date);
+        new_item->next = NULL;
         current->next = new_item;
         current = current->next;
     }
