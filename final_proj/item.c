@@ -515,6 +515,7 @@ void AddCustomerReview(Review* review_head, Item* items_head)
 	scanf("%s", newReview->item_type);
 	printf("Enter Review (1-10):\n");
 	scanf("%d", &newReview->customer_review);
+	newReview->next = NULL;
 	while (newReview->customer_review < 1 || newReview->customer_review > 10) 
 	{
 		printf("Invalid number, try again\n");
@@ -525,7 +526,7 @@ void AddCustomerReview(Review* review_head, Item* items_head)
 	char log_txt[100];
 	while (current_item != NULL)
 	{
-		if (newReview->item_id == current_item->id && strcmp(newReview->item_type,current_item->item_type))
+		if (newReview->item_id == current_item->id && strcmp(newReview->item_type,current_item->item_type)==0)
 		{
 			found = true;
 			break;

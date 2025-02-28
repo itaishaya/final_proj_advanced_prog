@@ -260,11 +260,12 @@ void ListItems2File(Item* head)
             return;
         }
         temp->id = current->id;
-        strcpy(temp->country_made,current->country_made);
-        temp->inStock = current->inStock;
         strcpy(temp->item_type, current->item_type);
-        temp->price = current->price;
+        strcpy(temp->country_made,current->country_made);
         strcpy(temp->manufacturing_date, current->manufacturing_date);
+        temp->price = current->price;
+        temp->inStock = current->inStock;
+        temp->inventory = current->inventory;
         temp->next = NULL;
         fwrite(temp, sizeof(Item), 1, file);
         current = current->next;
