@@ -313,7 +313,7 @@ void RemoveItem(Item* head)
 	_getch();
 }
 
-void SellItem(Item* items_head, ItemsOfCustomer* items_of_customer_head) 
+void SellItem(Item* items_head, ItemsOfCustomer* items_of_customer_head, Customer* customer_head) 
 {
 	/* This function processes the sale of an item to a customer.
 	 * It verifies the item ID, stock availability, and purchase constraints.
@@ -342,13 +342,44 @@ void SellItem(Item* items_head, ItemsOfCustomer* items_of_customer_head)
 	}
 
 	// Check if items_head is NULL
-	if (items_head == NULL) {
-		printf("Item list is empty!\n");
+	if (items_head->next == NULL) 
+	{
+		printf("Items list is empty!\n");
 		printf("press any key to continue\n");
 		_getch();
 		return;
 	}
 
+	if (customer_head->next == NULL)
+	{
+		printf("Customers list is empty!\n");
+		printf("press any key to continue\n");
+		_getch();
+		return;
+	}
+	// Find the customer
+	Customer* current_customer = customer_head->next;
+	while (current_customer != NULL && !found)
+	{
+		if (current_customer->id == customer_id)
+		{
+			found = true;
+		}
+		else
+		{
+			current_customer = current_customer->next;
+		}
+	}
+	if (!found) 
+	{
+		printf("Customer not found!\n");
+		sprintf(log_txt, "Customer with ID:%d tried to buy:%d item(s) with ID %d but the customer was not found\n", customer_id, count, item_id);
+		AddLog(log_txt);
+		printf("press any key to continue\n");
+		_getch();
+		return;
+	}
+	found = false;
 	// Find the item
 	Item* current_item = items_head->next;
 	while (current_item != NULL && !found)
@@ -471,7 +502,7 @@ void ShowProfit(ItemsOfCustomer* items_of_customer_head)
 	_getch();
 }
 
-void AddCustomerReview(Review* review_head) 
+void AddCustomerReview(Review* review_head, Item* items_head) 
 {
 	/* This function adds a customer review for a specific item.
 	 * It ensures valid input for review scores (1-10) and inserts it in sorted order.
@@ -484,11 +515,34 @@ void AddCustomerReview(Review* review_head)
 	scanf("%s", newReview->item_type);
 	printf("Enter Review (1-10):\n");
 	scanf("%d", &newReview->customer_review);
+	newReview->next = NULL;
 	while (newReview->customer_review < 1 || newReview->customer_review > 10) 
 	{
 		printf("Invalid number, try again\n");
 		scanf("%d", &newReview->customer_review);
 	}
+	Item* current_item = items_head->next;
+	bool found = false;
+	char log_txt[100];
+	while (current_item != NULL)
+	{
+		if (newReview->item_id == current_item->id && strcmp(newReview->item_type,current_item->item_type)==0)
+		{
+			found = true;
+			break;
+		}	
+		current_item = current_item->next;
+	}
+	if (!found)
+	{
+		printf("Item ID or item Type was not found in items list\n");
+		sprintf(log_txt, "Review for %s (ID: %d) was'nt added, item type or id type were'nt found.\n", newReview->item_type, newReview->item_id);
+		AddLog(log_txt);
+		printf("press any key to continue\n");
+		_getch();
+		return;
+	}
+
 	Review* prev = review_head;
 	Review* current = review_head->next;
 	while (current != NULL && current->item_id < newReview->item_id) 
@@ -500,7 +554,6 @@ void AddCustomerReview(Review* review_head)
 	prev->next = newReview;
 
 	printf("Review added successfully\n");
-	char log_txt[100];
 	sprintf(log_txt, "Review for %s (ID: %d) added.\n", newReview->item_type, newReview->item_id);
 	AddLog(log_txt);
 	printf("press any key to continue\n");
