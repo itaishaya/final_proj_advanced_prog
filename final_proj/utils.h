@@ -1,5 +1,5 @@
-// Shani Sharon *ID*
-// Itai Shaya *ID*
+// Shani Sharon 212432967
+// Itai Shaya 207033622
 
 #pragma once
 #include "time.h"
