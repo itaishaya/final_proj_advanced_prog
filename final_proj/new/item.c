@@ -1,3 +1,6 @@
+// Shani Sharon 212432967
+// Itai Shaya 207033622
+
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <stdio.h>
