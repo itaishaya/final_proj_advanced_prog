@@ -55,7 +55,7 @@ void showMenu(unsigned int level, Employee* employee_head, Item* item_head, Cust
         chooseOption(level, employee_head, item_head, customers_head, items_of_customer_head, review_head);
         break;
     case 3: //Practicioner
-        printf("Hi Practicioner, choose one option:n");
+        printf("Hi Practicioner, choose one option:\n");
         printf("1 - Search an item\n");
         printf("2 - Add a new item\n");
         printf("3 - Search a costumer\n");
